@@ -1,0 +1,22 @@
+{
+  "source": "flag-icons (lipis) v7.x — npm",
+  "format": "SVG",
+  "viewBox": "0 0 640 480",
+  "aspectRatio": "4:3",
+  "count": 48,
+  "tournament": "FIFA World Cup 2026",
+  "teams": {
+    "A": ["mexico", "south-korea", "south-africa", "czech-republic"],
+    "B": ["canada", "switzerland", "qatar", "bosnia"],
+    "C": ["brazil", "morocco", "scotland", "haiti"],
+    "D": ["usa", "australia", "paraguay", "turkey"],
+    "E": ["germany", "curacao", "ivory-coast", "ecuador"],
+    "F": ["netherlands", "japan", "tunisia", "sweden"],
+    "G": ["belgium", "iran", "egypt", "new-zealand"],
+    "H": ["spain", "uruguay", "saudi-arabia", "cape-verde"],
+    "I": ["france", "senegal", "norway", "iraq"],
+    "J": ["argentina", "austria", "algeria", "jordan"],
+    "K": ["portugal", "colombia", "uzbekistan", "dr-congo"],
+    "L": ["england", "croatia", "panama", "ghana"]
+  }
+}

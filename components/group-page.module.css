@@ -1,0 +1,489 @@
+.pageShell {
+  min-height: 100vh;
+  padding: 120px 24px 64px;
+  background:
+    radial-gradient(circle at top left, rgba(20, 240, 164, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(255, 176, 44, 0.14), transparent 24%),
+    #080c17;
+  color: #f5f7ff;
+}
+
+.pageHeader,
+.formCard,
+.summaryGrid,
+.openLayout,
+.closedLayout,
+.savePanel,
+.readOnlyBanner,
+.rankingCard,
+.scoringExplainer {
+  width: min(1200px, 100%);
+  margin: 0 auto 24px;
+}
+
+.pageHeader,
+.summaryCard,
+.identityCard,
+.participantsCard,
+.formCard,
+.savePanel,
+.readOnlyBanner,
+.rankingCard,
+.scoringExplainer,
+.scoringExplainerCompact {
+  border: 1px solid rgba(137, 151, 190, 0.2);
+  background: rgba(16, 22, 36, 0.92);
+  box-shadow: 0 20px 60px rgba(2, 8, 20, 0.35);
+}
+
+.pageHeader,
+.savePanel,
+.readOnlyBanner,
+.formCard,
+.summaryCard,
+.identityCard,
+.participantsCard,
+.rankingCard,
+.scoringExplainer,
+.scoringExplainerCompact {
+  border-radius: 28px;
+}
+
+.pageHeader,
+.savePanel,
+.readOnlyBanner,
+.formCard,
+.identityCard,
+.participantsCard,
+.rankingCard,
+.scoringExplainer {
+  padding: 28px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.pageHeader h1,
+.formHeader h1,
+.cardHeader h2,
+.savePanel h2,
+.readOnlyBanner h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.pageHeader p,
+.formHeader p,
+.cardHeader p,
+.summaryCard span,
+.participantRow span,
+.participantChoice span,
+.savePanel p,
+.readOnlyBanner p,
+.feedback,
+.feedbackBanner,
+.emptyState,
+.field small {
+  margin: 0;
+  color: rgba(220, 227, 255, 0.78);
+}
+
+.eyebrow,
+.summaryLabel {
+  margin: 0 0 8px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #63f2dc;
+}
+
+.headerActions,
+.formActions,
+.inlineActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(137, 151, 190, 0.26);
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: #071016;
+  background: linear-gradient(120deg, #63f2dc, #ffd05a);
+  border: none;
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryButton {
+  color: #f5f7ff;
+  background: rgba(26, 33, 51, 0.92);
+}
+
+.summaryGrid,
+.openLayout {
+  display: grid;
+  gap: 24px;
+}
+
+.summaryGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.summaryCard {
+  padding: 22px 24px;
+}
+
+.summaryCard strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 2rem;
+}
+
+.openLayout {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+}
+
+.closedLayout {
+  display: block;
+}
+
+.cardHeader,
+.formHeader {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.field span {
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(137, 151, 190, 0.24);
+  background: rgba(7, 12, 23, 0.88);
+  color: #f5f7ff;
+}
+
+.switchField {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 242, 220, 0.22);
+  background: rgba(11, 34, 42, 0.68);
+  cursor: pointer;
+}
+
+.switchField input {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.18rem;
+  accent-color: #63f2dc;
+}
+
+.switchField span {
+  display: grid;
+  gap: 4px;
+}
+
+.switchField small {
+  color: rgba(220, 227, 255, 0.72);
+}
+
+.scoringExplainer,
+.scoringExplainerCompact {
+  overflow: hidden;
+}
+
+.scoringExplainerCompact {
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.scoringExplainer summary,
+.scoringExplainerCompact summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5f7ff;
+  cursor: pointer;
+  font-weight: 800;
+  list-style: none;
+}
+
+.scoringExplainer summary::-webkit-details-marker,
+.scoringExplainerCompact summary::-webkit-details-marker {
+  display: none;
+}
+
+.scoringQuestionMark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid rgba(99, 242, 220, 0.45);
+  background: rgba(99, 242, 220, 0.12);
+  color: #63f2dc;
+  font-family: var(--font-heading);
+  line-height: 1;
+}
+
+.scoringExplainerBody {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(137, 151, 190, 0.16);
+}
+
+.scoringExplainerBody strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #63f2dc;
+}
+
+.scoringExplainerNotice {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 208, 90, 0.25);
+  background: rgba(69, 47, 12, 0.36);
+  color: rgba(255, 238, 188, 0.9);
+  line-height: 1.45;
+}
+
+.scoringExplainerBody p {
+  margin: 0;
+  color: rgba(220, 227, 255, 0.76);
+  line-height: 1.55;
+}
+
+.deadlineLabelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.deadlineComposer {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(137, 151, 190, 0.18);
+  background:
+    linear-gradient(135deg, rgba(15, 24, 40, 0.96), rgba(10, 15, 27, 0.9)),
+    rgba(10, 15, 27, 0.9);
+}
+
+.deadlineBlock {
+  display: grid;
+  gap: 8px;
+}
+
+.deadlineInputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.deadlineInputs input {
+  width: auto;
+  min-width: 0;
+  min-height: 56px;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(137, 151, 190, 0.24);
+  background: rgba(5, 10, 20, 0.9);
+  color: #f5f7ff;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  letter-spacing: 0.06em;
+}
+
+.deadlineInputs input[aria-label="Dia"],
+.deadlineInputs input[aria-label="Mes"],
+.deadlineInputs input[aria-label="Hora"],
+.deadlineInputs input[aria-label="Minutos"] {
+  width: 4.3rem;
+}
+
+.deadlineInputs input[aria-label="Anio"] {
+  width: 6.2rem;
+}
+
+.deadlineInputs span {
+  color: rgba(214, 223, 255, 0.7);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.participantList,
+.closedParticipantList,
+.rankingTable {
+  display: grid;
+  gap: 12px;
+}
+
+.participantList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.participantRow,
+.participantChoice,
+.rankingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(137, 151, 190, 0.18);
+  background: rgba(10, 16, 28, 0.82);
+}
+
+.rankingRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.rankingRow span {
+  font-weight: 800;
+}
+
+.rankingRow small {
+  grid-column: 2 / -1;
+  color: rgba(220, 227, 255, 0.68);
+}
+
+.participantChoice {
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.participantChoiceActive {
+  border-color: rgba(99, 242, 220, 0.5);
+  background: rgba(17, 43, 52, 0.9);
+}
+
+.savePanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.savePanelActions {
+  display: grid;
+  gap: 12px;
+  justify-items: end;
+}
+
+.feedback,
+.feedbackBanner {
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 183, 89, 0.28);
+  background: rgba(59, 33, 13, 0.55);
+}
+
+.feedbackBanner {
+  width: min(1200px, 100%);
+  margin: 0 auto 24px;
+}
+
+.emptyState {
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(9, 15, 27, 0.8);
+}
+
+@media (max-width: 920px) {
+  .pageShell {
+    padding: 108px 16px 48px;
+  }
+
+  .pageHeader,
+  .savePanel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .summaryGrid,
+  .openLayout,
+  .fieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .deadlineInputs {
+    gap: 8px;
+  }
+
+  .deadlineInputs input[aria-label="Dia"],
+  .deadlineInputs input[aria-label="Mes"],
+  .deadlineInputs input[aria-label="Hora"],
+  .deadlineInputs input[aria-label="Minutos"] {
+    width: 4rem;
+  }
+
+  .deadlineInputs input[aria-label="Anio"] {
+    width: 5.6rem;
+  }
+
+  .savePanelActions {
+    justify-items: stretch;
+  }
+}

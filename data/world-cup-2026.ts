@@ -1,0 +1,188 @@
+import {
+  GROUP_IDS,
+  type GroupDefinition,
+  type GroupId,
+  type KnockoutSlot,
+  type MatchId,
+  type MatchMeta,
+  type Team,
+  type ThirdPlaceMatchId,
+} from "@/lib/world-cup-types";
+
+const teamList: Team[] = [
+  { id: "mex", name: "Mexico", shortName: "México", code: "MEX", group: "A", flag: "🇲🇽", brandingAsset: "🇲🇽" },
+  { id: "rsa", name: "South Africa", shortName: "Sudáfrica", code: "RSA", group: "A", flag: "🇿🇦", brandingAsset: "🇿🇦" },
+  { id: "kor", name: "Korea Republic", shortName: "Corea", code: "KOR", group: "A", flag: "🇰🇷", brandingAsset: "🇰🇷" },
+  { id: "cze", name: "Czechia", shortName: "Chequia", code: "CZE", group: "A", flag: "🇨🇿", brandingAsset: "🇨🇿" },
+  { id: "can", name: "Canada", shortName: "Canadá", code: "CAN", group: "B", flag: "🇨🇦", brandingAsset: "🇨🇦" },
+  { id: "bih", name: "Bosnia and Herzegovina", shortName: "Bosnia", code: "BIH", group: "B", flag: "🇧🇦", brandingAsset: "🇧🇦" },
+  { id: "qat", name: "Qatar", shortName: "Qatar", code: "QAT", group: "B", flag: "🇶🇦", brandingAsset: "🇶🇦" },
+  { id: "sui", name: "Switzerland", shortName: "Suiza", code: "SUI", group: "B", flag: "🇨🇭", brandingAsset: "🇨🇭" },
+  { id: "bra", name: "Brazil", shortName: "Brasil", code: "BRA", group: "C", flag: "🇧🇷", brandingAsset: "🇧🇷" },
+  { id: "mar", name: "Morocco", shortName: "Marruecos", code: "MAR", group: "C", flag: "🇲🇦", brandingAsset: "🇲🇦" },
+  { id: "hai", name: "Haiti", shortName: "Haití", code: "HAI", group: "C", flag: "🇭🇹", brandingAsset: "🇭🇹" },
+  { id: "sco", name: "Scotland", shortName: "Escocia", code: "SCO", group: "C", flag: "🏴", brandingAsset: "SCO" },
+  { id: "usa", name: "USA", shortName: "Estados Unidos", code: "USA", group: "D", flag: "🇺🇸", brandingAsset: "🇺🇸" },
+  { id: "par", name: "Paraguay", shortName: "Paraguay", code: "PAR", group: "D", flag: "🇵🇾", brandingAsset: "🇵🇾" },
+  { id: "aus", name: "Australia", shortName: "Australia", code: "AUS", group: "D", flag: "🇦🇺", brandingAsset: "🇦🇺" },
+  { id: "tur", name: "Türkiye", shortName: "Turquía", code: "TUR", group: "D", flag: "🇹🇷", brandingAsset: "🇹🇷" },
+  { id: "ger", name: "Germany", shortName: "Alemania", code: "GER", group: "E", flag: "🇩🇪", brandingAsset: "🇩🇪" },
+  { id: "cuw", name: "Curaçao", shortName: "Curaçao", code: "CUW", group: "E", flag: "CW", brandingAsset: "CUW" },
+  { id: "civ", name: "Côte d'Ivoire", shortName: "Costa de Marfil", code: "CIV", group: "E", flag: "🇨🇮", brandingAsset: "🇨🇮" },
+  { id: "ecu", name: "Ecuador", shortName: "Ecuador", code: "ECU", group: "E", flag: "🇪🇨", brandingAsset: "🇪🇨" },
+  { id: "ned", name: "Netherlands", shortName: "Países Bajos", code: "NED", group: "F", flag: "🇳🇱", brandingAsset: "🇳🇱" },
+  { id: "jpn", name: "Japan", shortName: "Japón", code: "JPN", group: "F", flag: "🇯🇵", brandingAsset: "🇯🇵" },
+  { id: "swe", name: "Sweden", shortName: "Suecia", code: "SWE", group: "F", flag: "🇸🇪", brandingAsset: "🇸🇪" },
+  { id: "tun", name: "Tunisia", shortName: "Túnez", code: "TUN", group: "F", flag: "🇹🇳", brandingAsset: "🇹🇳" },
+  { id: "bel", name: "Belgium", shortName: "Bélgica", code: "BEL", group: "G", flag: "🇧🇪", brandingAsset: "🇧🇪" },
+  { id: "egy", name: "Egypt", shortName: "Egipto", code: "EGY", group: "G", flag: "🇪🇬", brandingAsset: "🇪🇬" },
+  { id: "irn", name: "IR Iran", shortName: "Irán", code: "IRN", group: "G", flag: "🇮🇷", brandingAsset: "🇮🇷" },
+  { id: "nzl", name: "New Zealand", shortName: "Nueva Zelanda", code: "NZL", group: "G", flag: "🇳🇿", brandingAsset: "🇳🇿" },
+  { id: "esp", name: "Spain", shortName: "España", code: "ESP", group: "H", flag: "🇪🇸", brandingAsset: "🇪🇸" },
+  { id: "cpv", name: "Cabo Verde", shortName: "Cabo Verde", code: "CPV", group: "H", flag: "🇨🇻", brandingAsset: "🇨🇻" },
+  { id: "ksa", name: "Saudi Arabia", shortName: "Arabia Saudita", code: "KSA", group: "H", flag: "🇸🇦", brandingAsset: "🇸🇦" },
+  { id: "uru", name: "Uruguay", shortName: "Uruguay", code: "URU", group: "H", flag: "🇺🇾", brandingAsset: "🇺🇾" },
+  { id: "fra", name: "France", shortName: "Francia", code: "FRA", group: "I", flag: "🇫🇷", brandingAsset: "🇫🇷" },
+  { id: "sen", name: "Senegal", shortName: "Senegal", code: "SEN", group: "I", flag: "🇸🇳", brandingAsset: "🇸🇳" },
+  { id: "irq", name: "Iraq", shortName: "Iraq", code: "IRQ", group: "I", flag: "🇮🇶", brandingAsset: "🇮🇶" },
+  { id: "nor", name: "Norway", shortName: "Noruega", code: "NOR", group: "I", flag: "🇳🇴", brandingAsset: "🇳🇴" },
+  { id: "arg", name: "Argentina", shortName: "Argentina", code: "ARG", group: "J", flag: "🇦🇷", brandingAsset: "🇦🇷" },
+  { id: "alg", name: "Algeria", shortName: "Argelia", code: "ALG", group: "J", flag: "🇩🇿", brandingAsset: "🇩🇿" },
+  { id: "aut", name: "Austria", shortName: "Austria", code: "AUT", group: "J", flag: "🇦🇹", brandingAsset: "🇦🇹" },
+  { id: "jor", name: "Jordan", shortName: "Jordania", code: "JOR", group: "J", flag: "🇯🇴", brandingAsset: "🇯🇴" },
+  { id: "por", name: "Portugal", shortName: "Portugal", code: "POR", group: "K", flag: "🇵🇹", brandingAsset: "🇵🇹" },
+  { id: "cod", name: "Congo DR", shortName: "RD Congo", code: "COD", group: "K", flag: "🇨🇩", brandingAsset: "🇨🇩" },
+  { id: "uzb", name: "Uzbekistan", shortName: "Uzbekistán", code: "UZB", group: "K", flag: "🇺🇿", brandingAsset: "🇺🇿" },
+  { id: "col", name: "Colombia", shortName: "Colombia", code: "COL", group: "K", flag: "🇨🇴", brandingAsset: "🇨🇴" },
+  { id: "eng", name: "England", shortName: "Inglaterra", code: "ENG", group: "L", flag: "🏴", brandingAsset: "ENG" },
+  { id: "cro", name: "Croatia", shortName: "Croacia", code: "CRO", group: "L", flag: "🇭🇷", brandingAsset: "🇭🇷" },
+  { id: "gha", name: "Ghana", shortName: "Ghana", code: "GHA", group: "L", flag: "🇬🇭", brandingAsset: "🇬🇭" },
+  { id: "pan", name: "Panama", shortName: "Panamá", code: "PAN", group: "L", flag: "🇵🇦", brandingAsset: "🇵🇦" },
+];
+
+export const teams = teamList;
+
+export const teamMap = Object.fromEntries(teamList.map((team) => [team.id, team]));
+
+export const groups: GroupDefinition[] = [
+  { id: "A", label: "Grupo A", color: "#14f0a4", accent: "#5affbf", teams: ["mex", "rsa", "kor", "cze"] },
+  { id: "B", label: "Grupo B", color: "#ff356d", accent: "#ff7b9b", teams: ["can", "bih", "qat", "sui"] },
+  { id: "C", label: "Grupo C", color: "#ff9b18", accent: "#ffc250", teams: ["bra", "mar", "hai", "sco"] },
+  { id: "D", label: "Grupo D", color: "#3c5bff", accent: "#7e92ff", teams: ["usa", "par", "aus", "tur"] },
+  { id: "E", label: "Grupo E", color: "#7b24ff", accent: "#b27cff", teams: ["ger", "cuw", "civ", "ecu"] },
+  { id: "F", label: "Grupo F", color: "#c5ff1b", accent: "#ddff6f", teams: ["ned", "jpn", "swe", "tun"] },
+  { id: "G", label: "Grupo G", color: "#ff6bb1", accent: "#ffa5d0", teams: ["bel", "egy", "irn", "nzl"] },
+  { id: "H", label: "Grupo H", color: "#63f2dc", accent: "#9dfff1", teams: ["esp", "cpv", "ksa", "uru"] },
+  { id: "I", label: "Grupo I", color: "#bb62d5", accent: "#d89aeb", teams: ["fra", "sen", "irq", "nor"] },
+  { id: "J", label: "Grupo J", color: "#50a7db", accent: "#8bc8ee", teams: ["arg", "alg", "aut", "jor"] },
+  { id: "K", label: "Grupo K", color: "#ff5f25", accent: "#ffa27c", teams: ["por", "cod", "uzb", "col"] },
+  { id: "L", label: "Grupo L", color: "#64bcff", accent: "#a2d8ff", teams: ["eng", "cro", "gha", "pan"] },
+];
+
+const knockoutMetaList: MatchMeta[] = [
+  { matchId: "M73", stage: "roundOf32", date: "2026-06-28", venue: "Los Angeles Stadium", city: "Los Angeles" },
+  { matchId: "M74", stage: "roundOf32", date: "2026-06-29", venue: "Boston Stadium", city: "Boston" },
+  { matchId: "M75", stage: "roundOf32", date: "2026-06-29", venue: "Estadio Monterrey", city: "Monterrey" },
+  { matchId: "M76", stage: "roundOf32", date: "2026-06-29", venue: "Houston Stadium", city: "Houston" },
+  { matchId: "M77", stage: "roundOf32", date: "2026-06-30", venue: "New York New Jersey Stadium", city: "New York / New Jersey" },
+  { matchId: "M78", stage: "roundOf32", date: "2026-06-30", venue: "Dallas Stadium", city: "Dallas" },
+  { matchId: "M79", stage: "roundOf32", date: "2026-06-30", venue: "Mexico City Stadium", city: "Ciudad de México" },
+  { matchId: "M80", stage: "roundOf32", date: "2026-07-01", venue: "Atlanta Stadium", city: "Atlanta" },
+  { matchId: "M81", stage: "roundOf32", date: "2026-07-01", venue: "San Francisco Bay Area Stadium", city: "San Francisco Bay Area" },
+  { matchId: "M82", stage: "roundOf32", date: "2026-07-01", venue: "Seattle Stadium", city: "Seattle" },
+  { matchId: "M83", stage: "roundOf32", date: "2026-07-02", venue: "Toronto Stadium", city: "Toronto" },
+  { matchId: "M84", stage: "roundOf32", date: "2026-07-02", venue: "Los Angeles Stadium", city: "Los Angeles" },
+  { matchId: "M85", stage: "roundOf32", date: "2026-07-02", venue: "BC Place Vancouver", city: "Vancouver" },
+  { matchId: "M86", stage: "roundOf32", date: "2026-07-03", venue: "Miami Stadium", city: "Miami" },
+  { matchId: "M87", stage: "roundOf32", date: "2026-07-03", venue: "Kansas City Stadium", city: "Kansas City" },
+  { matchId: "M88", stage: "roundOf32", date: "2026-07-03", venue: "Dallas Stadium", city: "Dallas" },
+  { matchId: "M89", stage: "roundOf16", date: "2026-07-04", venue: "Philadelphia Stadium", city: "Philadelphia" },
+  { matchId: "M90", stage: "roundOf16", date: "2026-07-04", venue: "Houston Stadium", city: "Houston" },
+  { matchId: "M91", stage: "roundOf16", date: "2026-07-05", venue: "New York New Jersey Stadium", city: "New York / New Jersey" },
+  { matchId: "M92", stage: "roundOf16", date: "2026-07-05", venue: "Mexico City Stadium", city: "Ciudad de México" },
+  { matchId: "M93", stage: "roundOf16", date: "2026-07-06", venue: "Dallas Stadium", city: "Dallas" },
+  { matchId: "M94", stage: "roundOf16", date: "2026-07-06", venue: "Seattle Stadium", city: "Seattle" },
+  { matchId: "M95", stage: "roundOf16", date: "2026-07-07", venue: "Atlanta Stadium", city: "Atlanta" },
+  { matchId: "M96", stage: "roundOf16", date: "2026-07-07", venue: "BC Place Vancouver", city: "Vancouver" },
+  { matchId: "M97", stage: "quarterFinal", date: "2026-07-09", venue: "Boston Stadium", city: "Boston" },
+  { matchId: "M98", stage: "quarterFinal", date: "2026-07-10", venue: "Los Angeles Stadium", city: "Los Angeles" },
+  { matchId: "M99", stage: "quarterFinal", date: "2026-07-11", venue: "Miami Stadium", city: "Miami" },
+  { matchId: "M100", stage: "quarterFinal", date: "2026-07-11", venue: "Kansas City Stadium", city: "Kansas City" },
+  { matchId: "M101", stage: "semiFinal", date: "2026-07-14", venue: "Dallas Stadium", city: "Dallas" },
+  { matchId: "M102", stage: "semiFinal", date: "2026-07-15", venue: "Atlanta Stadium", city: "Atlanta" },
+  { matchId: "M103", stage: "bronzeFinal", date: "2026-07-18", venue: "Miami Stadium", city: "Miami" },
+  { matchId: "M104", stage: "final", date: "2026-07-19", venue: "New York New Jersey Stadium", city: "New York / New Jersey" },
+];
+
+export const knockoutMeta = Object.fromEntries(
+  knockoutMetaList.map((match) => [match.matchId, match]),
+) as Record<MatchId, MatchMeta>;
+
+export const thirdPlaceFamilies: Record<ThirdPlaceMatchId, GroupId[]> = {
+  M74: ["A", "B", "C", "D", "F"],
+  M77: ["C", "D", "F", "G", "H"],
+  M79: ["C", "E", "F", "H", "I"],
+  M80: ["E", "H", "I", "J", "K"],
+  M81: ["B", "E", "F", "I", "J"],
+  M82: ["A", "E", "H", "I", "J"],
+  M85: ["E", "F", "G", "I", "J"],
+  M87: ["D", "E", "I", "J", "L"],
+};
+
+export const stageLabels = {
+  roundOf32: "16avos",
+  roundOf16: "Octavos",
+  quarterFinal: "Cuartos",
+  semiFinal: "Semifinales",
+  bronzeFinal: "Tercer puesto",
+  final: "Final",
+} as const;
+
+export const knockoutMatchOrder: MatchId[] = [
+  "M73", "M74", "M75", "M76", "M77", "M78", "M79", "M80",
+  "M81", "M82", "M83", "M84", "M85", "M86", "M87", "M88",
+  "M89", "M90", "M91", "M92", "M93", "M94", "M95", "M96",
+  "M97", "M98", "M99", "M100", "M101", "M102", "M103", "M104",
+];
+
+export const knockoutSlots: KnockoutSlot[] = [
+  { matchId: "M73", stage: "roundOf32", sideA: { kind: "placement", group: "A", place: 2 }, sideB: { kind: "placement", group: "B", place: 2 }, meta: knockoutMeta.M73 },
+  { matchId: "M74", stage: "roundOf32", sideA: { kind: "placement", group: "E", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M74 }, meta: knockoutMeta.M74 },
+  { matchId: "M75", stage: "roundOf32", sideA: { kind: "placement", group: "F", place: 1 }, sideB: { kind: "placement", group: "C", place: 2 }, meta: knockoutMeta.M75 },
+  { matchId: "M76", stage: "roundOf32", sideA: { kind: "placement", group: "C", place: 1 }, sideB: { kind: "placement", group: "F", place: 2 }, meta: knockoutMeta.M76 },
+  { matchId: "M77", stage: "roundOf32", sideA: { kind: "placement", group: "I", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M77 }, meta: knockoutMeta.M77 },
+  { matchId: "M78", stage: "roundOf32", sideA: { kind: "placement", group: "E", place: 2 }, sideB: { kind: "placement", group: "I", place: 2 }, meta: knockoutMeta.M78 },
+  { matchId: "M79", stage: "roundOf32", sideA: { kind: "placement", group: "A", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M79 }, meta: knockoutMeta.M79 },
+  { matchId: "M80", stage: "roundOf32", sideA: { kind: "placement", group: "L", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M80 }, meta: knockoutMeta.M80 },
+  { matchId: "M81", stage: "roundOf32", sideA: { kind: "placement", group: "D", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M81 }, meta: knockoutMeta.M81 },
+  { matchId: "M82", stage: "roundOf32", sideA: { kind: "placement", group: "G", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M82 }, meta: knockoutMeta.M82 },
+  { matchId: "M83", stage: "roundOf32", sideA: { kind: "placement", group: "K", place: 2 }, sideB: { kind: "placement", group: "L", place: 2 }, meta: knockoutMeta.M83 },
+  { matchId: "M84", stage: "roundOf32", sideA: { kind: "placement", group: "H", place: 1 }, sideB: { kind: "placement", group: "J", place: 2 }, meta: knockoutMeta.M84 },
+  { matchId: "M85", stage: "roundOf32", sideA: { kind: "placement", group: "B", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M85 }, meta: knockoutMeta.M85 },
+  { matchId: "M86", stage: "roundOf32", sideA: { kind: "placement", group: "J", place: 1 }, sideB: { kind: "placement", group: "H", place: 2 }, meta: knockoutMeta.M86 },
+  { matchId: "M87", stage: "roundOf32", sideA: { kind: "placement", group: "K", place: 1 }, sideB: { kind: "third", allowedGroups: thirdPlaceFamilies.M87 }, meta: knockoutMeta.M87 },
+  { matchId: "M88", stage: "roundOf32", sideA: { kind: "placement", group: "D", place: 2 }, sideB: { kind: "placement", group: "G", place: 2 }, meta: knockoutMeta.M88 },
+  { matchId: "M89", stage: "roundOf16", sideA: { kind: "winner", matchId: "M74" }, sideB: { kind: "winner", matchId: "M77" }, meta: knockoutMeta.M89 },
+  { matchId: "M90", stage: "roundOf16", sideA: { kind: "winner", matchId: "M73" }, sideB: { kind: "winner", matchId: "M75" }, meta: knockoutMeta.M90 },
+  { matchId: "M91", stage: "roundOf16", sideA: { kind: "winner", matchId: "M76" }, sideB: { kind: "winner", matchId: "M78" }, meta: knockoutMeta.M91 },
+  { matchId: "M92", stage: "roundOf16", sideA: { kind: "winner", matchId: "M79" }, sideB: { kind: "winner", matchId: "M80" }, meta: knockoutMeta.M92 },
+  { matchId: "M93", stage: "roundOf16", sideA: { kind: "winner", matchId: "M83" }, sideB: { kind: "winner", matchId: "M84" }, meta: knockoutMeta.M93 },
+  { matchId: "M94", stage: "roundOf16", sideA: { kind: "winner", matchId: "M81" }, sideB: { kind: "winner", matchId: "M82" }, meta: knockoutMeta.M94 },
+  { matchId: "M95", stage: "roundOf16", sideA: { kind: "winner", matchId: "M86" }, sideB: { kind: "winner", matchId: "M88" }, meta: knockoutMeta.M95 },
+  { matchId: "M96", stage: "roundOf16", sideA: { kind: "winner", matchId: "M85" }, sideB: { kind: "winner", matchId: "M87" }, meta: knockoutMeta.M96 },
+  { matchId: "M97", stage: "quarterFinal", sideA: { kind: "winner", matchId: "M89" }, sideB: { kind: "winner", matchId: "M90" }, meta: knockoutMeta.M97 },
+  { matchId: "M98", stage: "quarterFinal", sideA: { kind: "winner", matchId: "M93" }, sideB: { kind: "winner", matchId: "M94" }, meta: knockoutMeta.M98 },
+  { matchId: "M99", stage: "quarterFinal", sideA: { kind: "winner", matchId: "M91" }, sideB: { kind: "winner", matchId: "M92" }, meta: knockoutMeta.M99 },
+  { matchId: "M100", stage: "quarterFinal", sideA: { kind: "winner", matchId: "M95" }, sideB: { kind: "winner", matchId: "M96" }, meta: knockoutMeta.M100 },
+  { matchId: "M101", stage: "semiFinal", sideA: { kind: "winner", matchId: "M97" }, sideB: { kind: "winner", matchId: "M98" }, meta: knockoutMeta.M101 },
+  { matchId: "M102", stage: "semiFinal", sideA: { kind: "winner", matchId: "M99" }, sideB: { kind: "winner", matchId: "M100" }, meta: knockoutMeta.M102 },
+  { matchId: "M103", stage: "bronzeFinal", sideA: { kind: "loser", matchId: "M101" }, sideB: { kind: "loser", matchId: "M102" }, meta: knockoutMeta.M103 },
+  { matchId: "M104", stage: "final", sideA: { kind: "winner", matchId: "M101" }, sideB: { kind: "winner", matchId: "M102" }, meta: knockoutMeta.M104 },
+];
+
+export const groupIdSet = new Set<GroupId>(GROUP_IDS);
+
+export const groupMap = Object.fromEntries(groups.map((group) => [group.id, group])) as Record<
+  GroupId,
+  GroupDefinition
+>;

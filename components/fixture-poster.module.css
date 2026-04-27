@@ -1,0 +1,500 @@
+.posterRoot {
+  --card-width: 12rem;
+  --featured-card-width: 14rem;
+  --compact-card-width: 12.4rem;
+  --connector-gap: 1.6rem;
+  --branch-gap: 1.2rem;
+  --canvas-gap: 3.6rem;
+  --connector-color: rgba(126, 245, 222, 0.72);
+  inline-size: 2520px;
+  padding: 44px 46px 36px;
+  border-radius: 36px;
+  border: 1px solid rgba(150, 169, 211, 0.16);
+  background:
+    radial-gradient(circle at top left, rgba(99, 242, 220, 0.14), transparent 26%),
+    radial-gradient(circle at top right, rgba(255, 196, 80, 0.16), transparent 22%),
+    linear-gradient(180deg, #08101d, #050913);
+  color: #f7f9ff;
+  box-shadow: 0 40px 120px rgba(2, 8, 20, 0.34);
+}
+
+.posterHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 26px;
+}
+
+.brandBlock {
+  display: grid;
+  gap: 18px;
+  min-inline-size: 0;
+}
+
+.brandLogos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brandLogo {
+  inline-size: 86px;
+  block-size: auto;
+}
+
+.brandFifa {
+  inline-size: 176px;
+  block-size: auto;
+}
+
+.brandCopy {
+  display: grid;
+  gap: 10px;
+  max-inline-size: 860px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #7ef5de;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.brandCopy h1 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 66px;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+.posterDescription {
+  margin: 0;
+  color: rgba(233, 238, 255, 0.72);
+  font-size: 19px;
+  line-height: 1.45;
+}
+
+.metaStack {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-inline-size: 360px;
+}
+
+.metaCard,
+.metaCardChampion {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(150, 169, 211, 0.14);
+  background: rgba(16, 23, 39, 0.9);
+}
+
+.metaCard span,
+.metaCardChampion span {
+  color: rgba(233, 238, 255, 0.62);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.metaCard strong,
+.metaCardChampion strong {
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.metaCardChampion {
+  background:
+    radial-gradient(circle at top left, rgba(255, 196, 80, 0.2), transparent 48%),
+    rgba(24, 20, 16, 0.94);
+  border-color: rgba(255, 196, 80, 0.26);
+}
+
+.stageGuide {
+  display: grid;
+  grid-template-columns: repeat(9, max-content);
+  gap: 18px;
+  width: max-content;
+  margin: 0 auto 22px;
+  align-items: center;
+}
+
+.stagePill {
+  min-block-size: 52px;
+  display: grid;
+  place-items: center;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(126, 245, 222, 0.48);
+  background: rgba(18, 40, 43, 0.92);
+  color: #7ef5de;
+  font-family: var(--font-heading);
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stagePillFinal {
+  border-color: rgba(255, 196, 80, 0.42);
+  background:
+    radial-gradient(circle at center, rgba(255, 196, 80, 0.14), transparent 55%),
+    rgba(33, 27, 18, 0.92);
+  color: #ffd47b;
+}
+
+.posterCanvas {
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--canvas-gap);
+  width: max-content;
+  margin-inline: auto;
+  row-gap: 0;
+}
+
+.branchColumn {
+  display: flex;
+  align-items: center;
+}
+
+.finalColumn {
+  display: contents;
+}
+
+.bronzeColumn {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  margin-top: -96px;
+}
+
+.finalRow {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.posterFinalStack {
+  display: grid;
+  justify-items: center;
+}
+
+.posterTrophyWrap {
+  inline-size: 172px;
+  aspect-ratio: 1;
+  margin-block-end: -10px;
+  filter: drop-shadow(0 22px 32px rgba(255, 197, 74, 0.18));
+}
+
+.posterTrophy {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.finalConnector {
+  inline-size: 1.05rem;
+  block-size: 3px;
+  background: var(--connector-color);
+}
+
+.treeNode,
+.treeLeaf {
+  display: flex;
+  align-items: center;
+}
+
+.treeNodeLeft,
+.treeLeafLeft {
+  justify-content: flex-end;
+}
+
+.treeNodeRight,
+.treeLeafRight {
+  justify-content: flex-start;
+}
+
+.treeChildren {
+  position: relative;
+  display: grid;
+  gap: var(--branch-gap);
+}
+
+.treeChildrenLeft {
+  padding-inline-end: var(--connector-gap);
+}
+
+.treeChildrenRight {
+  padding-inline-start: var(--connector-gap);
+}
+
+.treeChild {
+  position: relative;
+  display: flex;
+}
+
+.treeChildLeft {
+  justify-content: flex-end;
+}
+
+.treeChildRight {
+  justify-content: flex-start;
+}
+
+.treeChildLeft:not(:only-child):first-child::before,
+.treeChildLeft:not(:only-child):last-child::before,
+.treeChildRight:not(:only-child):first-child::before,
+.treeChildRight:not(:only-child):last-child::before {
+  content: "";
+  position: absolute;
+  inline-size: 3px;
+  background: var(--connector-color);
+}
+
+.treeChildLeft:not(:only-child):first-child::before {
+  inset-inline-end: calc(var(--connector-gap) / -2);
+  inset-block-start: 50%;
+  block-size: calc(50% + var(--branch-gap) / 2);
+}
+
+.treeChildLeft:not(:only-child):last-child::before {
+  inset-inline-end: calc(var(--connector-gap) / -2);
+  inset-block-end: 50%;
+  block-size: calc(50% + var(--branch-gap) / 2);
+}
+
+.treeChildRight:not(:only-child):first-child::before {
+  inset-inline-start: calc(var(--connector-gap) / -2);
+  inset-block-start: 50%;
+  block-size: calc(50% + var(--branch-gap) / 2);
+}
+
+.treeChildRight:not(:only-child):last-child::before {
+  inset-inline-start: calc(var(--connector-gap) / -2);
+  inset-block-end: 50%;
+  block-size: calc(50% + var(--branch-gap) / 2);
+}
+
+.treeChildLeft::after,
+.treeChildRight::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inline-size: calc(var(--connector-gap) / 2);
+  block-size: 3px;
+  background: var(--connector-color);
+  transform: translateY(-50%);
+}
+
+.treeChildLeft::after {
+  inset-inline-end: calc(var(--connector-gap) / -2);
+}
+
+.treeChildRight::after {
+  inset-inline-start: calc(var(--connector-gap) / -2);
+}
+
+.treeConnector {
+  position: relative;
+  flex: 0 0 var(--connector-gap);
+  align-self: stretch;
+  min-block-size: 5.7rem;
+}
+
+.treeConnector::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  block-size: 3px;
+  background: var(--connector-color);
+  transform: translateY(-50%);
+}
+
+.treeMatch {
+  display: flex;
+}
+
+.matchCard {
+  inline-size: var(--card-width);
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 26px;
+  border: 1px solid rgba(150, 169, 211, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+    rgba(10, 15, 27, 0.96);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+
+.matchCardFeatured {
+  inline-size: var(--featured-card-width);
+  background:
+    radial-gradient(circle at top center, rgba(255, 196, 80, 0.2), transparent 44%),
+    radial-gradient(circle at bottom left, rgba(126, 245, 222, 0.16), transparent 42%),
+    rgba(10, 15, 27, 0.98);
+  border-color: rgba(255, 196, 80, 0.26);
+}
+
+.matchCardCompact {
+  inline-size: var(--compact-card-width);
+}
+
+.matchCardRight,
+.matchCardRight .matchHeader {
+  text-align: right;
+}
+
+.matchCardCenter,
+.matchCardCenter .matchHeader {
+  text-align: center;
+}
+
+.matchHeader {
+  display: grid;
+  gap: 6px;
+}
+
+.matchHeader strong {
+  font-size: 20px;
+  line-height: 1.12;
+  text-transform: capitalize;
+}
+
+.matchHeader span {
+  color: rgba(233, 238, 255, 0.62);
+  font-size: 15px;
+}
+
+.countryStack {
+  display: grid;
+  gap: 10px;
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(150, 169, 211, 0.12);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.teamRowWinner {
+  background: rgba(126, 245, 222, 0.16);
+  border-color: rgba(126, 245, 222, 0.34);
+}
+
+.teamRowRight {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.teamRowCenter {
+  text-align: center;
+}
+
+.teamIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-inline-size: 0;
+}
+
+.teamRowRight .teamIdentity {
+  flex-direction: row-reverse;
+}
+
+.flagFrame {
+  inline-size: 34px;
+  block-size: 24px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.flagAsset {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.flagFallback {
+  display: grid;
+  place-items: center;
+  inline-size: 34px;
+  block-size: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
+.teamCopy {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.teamCopy strong {
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.teamCopy span {
+  color: rgba(233, 238, 255, 0.68);
+  font-size: 15px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusDot {
+  inline-size: 13px;
+  block-size: 13px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 196, 80, 0.8);
+}
+
+.statusDotWinner {
+  border-color: #7ef5de;
+  background: #7ef5de;
+  box-shadow: 0 0 0 6px rgba(126, 245, 222, 0.14);
+}
+
+.statusDotReady {
+  background: rgba(255, 196, 80, 0.12);
+}
+
+.posterFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(150, 169, 211, 0.14);
+  color: rgba(233, 238, 255, 0.52);
+  font-size: 15px;
+}
