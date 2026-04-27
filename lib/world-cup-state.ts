@@ -39,8 +39,16 @@ export function loadFixtureStateFromBrowser() {
   }
 
   const url = new URL(window.location.href);
-  const fromUrl = decodeFixtureState(url.searchParams.get("p"));
+  const encodedFromUrl = url.searchParams.get("p");
+  const fromUrl = decodeFixtureState(encodedFromUrl);
   if (fromUrl) {
+    if (encodedFromUrl) {
+      window.localStorage.setItem(STORAGE_KEY, encodedFromUrl);
+    }
+
+    url.searchParams.delete("p");
+    window.history.replaceState({}, "", url);
+
     return {
       state: fromUrl,
       source: "url" as const,
@@ -71,7 +79,6 @@ export function persistFixtureState(state: FixtureState) {
   const url = new URL(window.location.href);
   url.searchParams.set("p", encoded);
 
-  window.history.replaceState({}, "", url);
   window.localStorage.setItem(STORAGE_KEY, encoded);
 
   return url.toString();
