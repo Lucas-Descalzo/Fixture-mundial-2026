@@ -719,6 +719,33 @@
   max-inline-size: 40rem;
 }
 
+.knockoutLockedCard {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  min-block-size: 18rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px dashed rgba(126, 245, 222, 0.36);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 18% 15%, rgba(126, 245, 222, 0.16), transparent 34%),
+    radial-gradient(circle at 82% 80%, rgba(255, 196, 80, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.035);
+}
+
+.knockoutLockedCard h3 {
+  margin-block-start: 0.25rem;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+}
+
+.knockoutLockedCard p:not(.sectionEyebrow) {
+  max-inline-size: 42rem;
+  color: rgba(245, 248, 255, 0.66);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .exportCopy h3 {
   margin: 0;
   font-size: 1.2rem;
@@ -970,7 +997,8 @@
 
   .assignmentHeader,
   .championBand,
-  .exportPanel {
+  .exportPanel,
+  .knockoutLockedCard {
     flex-wrap: wrap;
   }
 

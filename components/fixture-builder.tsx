@@ -112,6 +112,7 @@ export function FixtureBuilder({
     !readOnly && canEditThirdAssignments && isThirdAssignmentEditorOpen;
   const allThirdSlotsReady =
     canEditThirdAssignments && thirdAssignmentCount === 8;
+  const isKnockoutReady = allThirdSlotsReady;
   const isComplete = isFixtureComplete(fixtureState);
   const generatedAtLabel = new Intl.DateTimeFormat("es-AR", {
     dateStyle: "full",
@@ -246,6 +247,13 @@ export function FixtureBuilder({
 
     updateState({
       knockoutWinners: nextWinners,
+    });
+  };
+
+  const scrollToThirdPlaces = () => {
+    document.getElementById("terceros")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -637,21 +645,31 @@ export function FixtureBuilder({
           <p className={styles.sectionHint}>
             {readOnly
               ? "Esta vista conserva las selecciones guardadas hasta la final."
-              : "Cada partido muestra la fecha por defecto. Toca el boton de info para ver sede y numero oficial, y elige una seleccion para marcar ganadora."}
+              : isKnockoutReady
+                ? "Cada partido muestra la fecha por defecto. Toca el boton de info para ver sede y numero oficial, y elige una seleccion para marcar ganadora."
+                : "El cuadro se habilita cuando elegis los ocho mejores terceros clasificados."}
           </p>
         </div>
 
         <div className={styles.championBand}>
           <div>
             <p className={styles.sectionEyebrow}>Campeon proyectado</p>
-            <h3>{champion ? champion.shortName : "Todavia sin campeon"}</h3>
+            <h3>
+              {!isKnockoutReady
+                ? "Cuadro pendiente"
+                : champion
+                  ? champion.shortName
+                  : "Todavia sin campeon"}
+            </h3>
             <p>
-              {champion
+              {!isKnockoutReady
+                ? "Primero defini los mejores terceros para que aparezcan los cruces oficiales."
+                : champion
                 ? `La prediccion levanta la copa en ${matches.M104.meta.city}.`
                 : "Hace falta completar todos los cruces hasta la final para cerrar la prediccion."}
             </p>
           </div>
-          {champion ? <TeamBadge teamId={champion.id} /> : null}
+          {isKnockoutReady && champion ? <TeamBadge teamId={champion.id} /> : null}
         </div>
 
         <div className={styles.exportPanel}>
@@ -669,11 +687,13 @@ export function FixtureBuilder({
               type="button"
               className={styles.primaryAction}
               onClick={exportFixtureImage}
-              disabled={!isComplete || isExportingImage}
+              disabled={!isKnockoutReady || !isComplete || isExportingImage}
             >
               {isExportingImage
                 ? "Generando imagen..."
-                : isComplete
+                : !isKnockoutReady
+                  ? "Elegi los 8 terceros para exportar"
+                  : isComplete
                   ? "Descargar imagen PNG"
                   : "Completa el cuadro para exportar"}
             </button>
@@ -683,21 +703,46 @@ export function FixtureBuilder({
 
         {afterChampion}
 
-        <TournamentBracket
-          matchesById={matches}
-          onPickWinner={readOnly ? undefined : pickMatchWinner}
-          readOnly={readOnly}
-        />
-
-        <div className={styles.posterCaptureRoot} aria-hidden>
-          <FixturePoster
-            ref={exportPosterRef}
+        {isKnockoutReady ? (
+          <TournamentBracket
             matchesById={matches}
-            championName={champion?.shortName ?? "Sin campeon definido"}
-            generatedAtLabel={generatedAtLabel}
-            title={readOnly ? "Fixture guardado Mundial 2026" : "Tu fixture Mundial 2026"}
+            onPickWinner={readOnly ? undefined : pickMatchWinner}
+            readOnly={readOnly}
           />
-        </div>
+        ) : (
+          <div className={styles.knockoutLockedCard}>
+            <div>
+              <p className={styles.sectionEyebrow}>Cuadro oculto</p>
+              <h3>Primero elegi los 8 mejores terceros</h3>
+              <p>
+                Asi evitamos mostrar cruces incompletos o paises sueltos. Cuando completes el
+                Paso 2, la app arma automaticamente los cruces oficiales de 16avos.
+              </p>
+            </div>
+
+            {!readOnly ? (
+              <button
+                type="button"
+                className={styles.secondaryAction}
+                onClick={scrollToThirdPlaces}
+              >
+                Ir a mejores terceros
+              </button>
+            ) : null}
+          </div>
+        )}
+
+        {isKnockoutReady ? (
+          <div className={styles.posterCaptureRoot} aria-hidden>
+            <FixturePoster
+              ref={exportPosterRef}
+              matchesById={matches}
+              championName={champion?.shortName ?? "Sin campeon definido"}
+              generatedAtLabel={generatedAtLabel}
+              title={readOnly ? "Fixture guardado Mundial 2026" : "Tu fixture Mundial 2026"}
+            />
+          </div>
+        ) : null}
       </section>
     </>
   );
