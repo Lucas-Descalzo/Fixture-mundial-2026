@@ -21,6 +21,7 @@ import {
 import { isFixtureComplete } from "@/lib/group-utils";
 import { getTeamFlagAsset } from "@/lib/team-flag-assets";
 import type {
+  DerivedMatch,
   FixtureState,
   GroupId,
   MatchId,
@@ -40,6 +41,23 @@ function formatMatchDate(date: string) {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${date}T12:00:00Z`));
+}
+
+function createEmptyKnockoutMatches(matches: Record<MatchId, DerivedMatch>) {
+  return Object.fromEntries(
+    Object.entries(matches).map(([matchId, match]) => [
+      matchId,
+      {
+        ...match,
+        sideA: null,
+        sideB: null,
+        sideALabel: "Por definir",
+        sideBLabel: "Por definir",
+        winnerId: undefined,
+        loserId: undefined,
+      },
+    ]),
+  ) as Record<MatchId, DerivedMatch>;
 }
 
 export function TeamBadge({
@@ -99,6 +117,7 @@ export function FixtureBuilder({
   };
 
   const matches = deriveMatches(fixtureState).matchesById;
+  const emptyMatches = createEmptyKnockoutMatches(matches);
   const champion = getChampion(matches);
   const thirdCandidates = getThirdPlaceCandidates(fixtureState.groupOrders);
   const selectedThirds = fixtureState.qualifiedThirdPlaces.map((teamId) => teamMap[teamId]);
@@ -247,13 +266,6 @@ export function FixtureBuilder({
 
     updateState({
       knockoutWinners: nextWinners,
-    });
-  };
-
-  const scrollToThirdPlaces = () => {
-    document.getElementById("terceros")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
     });
   };
 
@@ -703,34 +715,11 @@ export function FixtureBuilder({
 
         {afterChampion}
 
-        {isKnockoutReady ? (
-          <TournamentBracket
-            matchesById={matches}
-            onPickWinner={readOnly ? undefined : pickMatchWinner}
-            readOnly={readOnly}
-          />
-        ) : (
-          <div className={styles.knockoutLockedCard}>
-            <div>
-              <p className={styles.sectionEyebrow}>Cuadro oculto</p>
-              <h3>Primero elegi los 8 mejores terceros</h3>
-              <p>
-                Asi evitamos mostrar cruces incompletos o paises sueltos. Cuando completes el
-                Paso 2, la app arma automaticamente los cruces oficiales de 16avos.
-              </p>
-            </div>
-
-            {!readOnly ? (
-              <button
-                type="button"
-                className={styles.secondaryAction}
-                onClick={scrollToThirdPlaces}
-              >
-                Ir a mejores terceros
-              </button>
-            ) : null}
-          </div>
-        )}
+        <TournamentBracket
+          matchesById={isKnockoutReady ? matches : emptyMatches}
+          onPickWinner={isKnockoutReady && !readOnly ? pickMatchWinner : undefined}
+          readOnly={readOnly || !isKnockoutReady}
+        />
 
         {isKnockoutReady ? (
           <div className={styles.posterCaptureRoot} aria-hidden>
