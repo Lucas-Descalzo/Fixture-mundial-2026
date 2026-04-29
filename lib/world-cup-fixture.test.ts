@@ -30,6 +30,44 @@ describe("world cup fixture engine", () => {
     }
   });
 
+  it("uses the official third-place matrix independently of selection order", () => {
+    const initialState = createInitialFixtureState();
+    const selectedThirds = getThirdPlaceCandidates(initialState.groupOrders)
+      .map((team) => team.id)
+      .slice(0, 8);
+    const reversedThirds = [...selectedThirds].reverse();
+
+    const assignments = suggestThirdAssignments(selectedThirds);
+    const reversedAssignments = suggestThirdAssignments(reversedThirds);
+
+    expect(reversedAssignments).toEqual(assignments);
+    expect(teamMap[assignments.M79!].group).toBe("H");
+    expect(teamMap[assignments.M85!].group).toBe("G");
+    expect(teamMap[assignments.M81!].group).toBe("B");
+    expect(teamMap[assignments.M74!].group).toBe("C");
+    expect(teamMap[assignments.M82!].group).toBe("A");
+    expect(teamMap[assignments.M77!].group).toBe("F");
+    expect(teamMap[assignments.M87!].group).toBe("D");
+    expect(teamMap[assignments.M80!].group).toBe("E");
+  });
+
+  it("ignores manual third-place overrides and keeps the official matrix assignment", () => {
+    const initialState = createInitialFixtureState();
+    const selectedThirds = getThirdPlaceCandidates(initialState.groupOrders)
+      .map((team) => team.id)
+      .slice(0, 8);
+
+    const normalized = normalizeFixtureState({
+      ...initialState,
+      qualifiedThirdPlaces: selectedThirds,
+      thirdPlaceAssignments: {
+        M79: selectedThirds[0],
+      },
+    });
+
+    expect(teamMap[normalized.thirdPlaceAssignments.M79!].group).toBe("H");
+  });
+
   it("removes third-place selections that stop being third after a group reorder", () => {
     const initialState = createInitialFixtureState();
     const formerThird = initialState.groupOrders.A[2];

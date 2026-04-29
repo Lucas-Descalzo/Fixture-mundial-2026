@@ -218,7 +218,7 @@ export function WorldCupApp() {
             <p className={styles.heroPanelEyebrow}>Flujo guiado</p>
             <ol className={styles.heroPanelList}>
               <li>Defini el orden final de los 12 grupos.</li>
-              <li>Elegi y ordena los 8 mejores terceros.</li>
+              <li>Elegi los 8 terceros clasificados.</li>
               <li>Completa el bracket interactivo hasta el campeon.</li>
             </ol>
           </div>
@@ -234,8 +234,8 @@ export function WorldCupApp() {
       <section className={styles.infoStrip}>
         <div>
           <strong>Como funciona:</strong> en esta version ordenas el 1°, 2°, 3° y 4° de cada
-          grupo, elegis los ocho mejores terceros y podes ajustar el tercero asignado a cada
-          llave permitida.
+          grupo y elegis los ocho mejores terceros. La app los ubica automaticamente segun la
+          matriz oficial de combinaciones FIFA.
         </div>
         <div>
           <strong>Reglamento base:</strong> pasan los dos primeros de cada grupo y ocho

@@ -8,6 +8,10 @@ import {
   thirdPlaceFamilies,
 } from "@/data/world-cup-2026";
 import {
+  createThirdPlaceCombinationKey,
+  thirdPlaceCombinationMatrix,
+} from "@/data/third-place-combinations";
+import {
   GROUP_IDS,
   THIRD_PLACE_MATCH_IDS,
   type DerivedMatch,
@@ -78,50 +82,29 @@ export function suggestThirdAssignments(
     return {};
   }
 
-  const ranked = [...qualifiedThirdPlaces];
-  const used = new Set<TeamId>();
+  const teamsByGroup = Object.fromEntries(
+    qualifiedThirdPlaces.map((teamId) => [teamMap[teamId].group, teamId]),
+  ) as Partial<Record<GroupId, TeamId>>;
+  const combinationKey = createThirdPlaceCombinationKey(
+    qualifiedThirdPlaces.map((teamId) => teamMap[teamId].group),
+  );
+  const officialAssignment = thirdPlaceCombinationMatrix[combinationKey];
   const assignment: Partial<Record<ThirdPlaceMatchId, TeamId>> = {};
-  const slotOrder = [...THIRD_PLACE_MATCH_IDS].sort((left, right) => {
-    const leftOptions = thirdPlaceFamilies[left].filter((groupId) =>
-      ranked.some((teamId) => teamMap[teamId].group === groupId),
-    ).length;
-    const rightOptions = thirdPlaceFamilies[right].filter((groupId) =>
-      ranked.some((teamId) => teamMap[teamId].group === groupId),
-    ).length;
 
-    return leftOptions - rightOptions;
-  });
-
-  function backtrack(index: number) {
-    if (index === slotOrder.length) {
-      return true;
-    }
-
-    const slotId = slotOrder[index];
-    const compatibleTeams = ranked.filter((teamId) => {
-      if (used.has(teamId)) {
-        return false;
-      }
-
-      return thirdPlaceFamilies[slotId].includes(teamMap[teamId].group);
-    });
-
-    for (const teamId of compatibleTeams) {
-      used.add(teamId);
-      assignment[slotId] = teamId;
-
-      if (backtrack(index + 1)) {
-        return true;
-      }
-
-      used.delete(teamId);
-      delete assignment[slotId];
-    }
-
-    return false;
+  if (!officialAssignment) {
+    return {};
   }
 
-  backtrack(0);
+  for (const matchId of THIRD_PLACE_MATCH_IDS) {
+    const assignedGroup = officialAssignment[matchId];
+    const teamId = teamsByGroup[assignedGroup];
+
+    if (!teamId || !thirdPlaceFamilies[matchId].includes(assignedGroup)) {
+      return {};
+    }
+
+    assignment[matchId] = teamId;
+  }
 
   return assignment;
 }
@@ -137,49 +120,14 @@ export function sanitizeQualifiedThirdPlaces(
 }
 
 export function sanitizeThirdAssignments(
-  incoming: Partial<Record<ThirdPlaceMatchId, TeamId>> | undefined,
+  _incoming: Partial<Record<ThirdPlaceMatchId, TeamId>> | undefined,
   qualifiedThirdPlaces: TeamId[],
 ) {
   if (qualifiedThirdPlaces.length !== THIRD_PLACE_MATCH_IDS.length) {
     return {};
   }
 
-  const selectedSet = new Set(qualifiedThirdPlaces);
-  const used = new Set<TeamId>();
-  const assignment: Partial<Record<ThirdPlaceMatchId, TeamId>> = {};
-
-  for (const slotId of THIRD_PLACE_MATCH_IDS) {
-    const teamId = incoming?.[slotId];
-
-    if (!teamId || used.has(teamId) || !selectedSet.has(teamId)) {
-      continue;
-    }
-
-    if (!thirdPlaceFamilies[slotId].includes(teamMap[teamId].group)) {
-      continue;
-    }
-
-    assignment[slotId] = teamId;
-    used.add(teamId);
-  }
-
-  const suggested = suggestThirdAssignments(qualifiedThirdPlaces);
-
-  for (const slotId of THIRD_PLACE_MATCH_IDS) {
-    if (assignment[slotId]) {
-      continue;
-    }
-
-    const teamId = suggested[slotId];
-    if (!teamId || used.has(teamId)) {
-      continue;
-    }
-
-    assignment[slotId] = teamId;
-    used.add(teamId);
-  }
-
-  return assignment;
+  return suggestThirdAssignments(qualifiedThirdPlaces);
 }
 
 function formatPlacementRef(group: GroupId, place: 1 | 2) {

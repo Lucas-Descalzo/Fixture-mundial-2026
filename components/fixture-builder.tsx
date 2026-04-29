@@ -28,6 +28,7 @@ import type {
   TeamId,
   ThirdPlaceMatchId,
 } from "@/lib/world-cup-types";
+import { THIRD_PLACE_MATCH_IDS } from "@/lib/world-cup-types";
 
 import { TournamentBracket } from "./tournament-bracket";
 import { FixturePoster } from "./fixture-poster";
@@ -105,7 +106,7 @@ export function FixtureBuilder({
   beforeBuilder,
   afterChampion,
 }: FixtureBuilderProps) {
-  const [isThirdAssignmentEditorOpen, setIsThirdAssignmentEditorOpen] = useState(false);
+  const [isThirdAssignmentEditorOpen] = useState(false);
   const [isExportingImage, setIsExportingImage] = useState(false);
   const [exportFeedback, setExportFeedback] = useState("");
   const exportPosterRef = useRef<HTMLDivElement | null>(null);
@@ -126,11 +127,12 @@ export function FixtureBuilder({
   );
   const thirdSlotOptions = getThirdPlaceSlotOptions(fixtureState.qualifiedThirdPlaces);
   const thirdAssignmentCount = Object.keys(fixtureState.thirdPlaceAssignments).length;
-  const canEditThirdAssignments = fixtureState.qualifiedThirdPlaces.length === 8;
+  const hasEightThirdsSelected = fixtureState.qualifiedThirdPlaces.length === 8;
+  const canEditThirdAssignments = hasEightThirdsSelected;
   const isThirdAssignmentEditorVisible =
     !readOnly && canEditThirdAssignments && isThirdAssignmentEditorOpen;
   const allThirdSlotsReady =
-    canEditThirdAssignments && thirdAssignmentCount === 8;
+    hasEightThirdsSelected && thirdAssignmentCount === 8;
   const isKnockoutReady = allThirdSlotsReady;
   const isComplete = isFixtureComplete(fixtureState);
   const generatedAtLabel = new Intl.DateTimeFormat("es-AR", {
@@ -199,25 +201,6 @@ export function FixtureBuilder({
       qualifiedThirdPlaces: fixtureState.qualifiedThirdPlaces.filter(
         (selectedTeamId) => selectedTeamId !== teamId,
       ),
-    });
-  };
-
-  const moveThirdPlaceTeam = (index: number, direction: -1 | 1) => {
-    if (readOnly) {
-      return;
-    }
-
-    const reordered = [...fixtureState.qualifiedThirdPlaces];
-    const targetIndex = index + direction;
-
-    if (targetIndex < 0 || targetIndex >= reordered.length) {
-      return;
-    }
-
-    [reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]];
-
-    updateState({
-      qualifiedThirdPlaces: reordered,
     });
   };
 
@@ -407,12 +390,12 @@ export function FixtureBuilder({
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.sectionEyebrow}>Paso 2</p>
-            <h2>{readOnly ? "Ocho mejores terceros" : "Elegi los ocho mejores terceros"}</h2>
+            <h2>{readOnly ? "Terceros clasificados" : "Elegi los 8 terceros clasificados"}</h2>
           </div>
           <p className={styles.sectionHint}>
             {readOnly
-              ? "Se muestra el ranking guardado de terceros clasificados."
-              : "Tu orden funciona como ranking manual de terceros: del mejor al octavo clasificado."}
+              ? "Se muestran las terceras selecciones que avanzan a 16avos."
+              : "El orden no modifica los cruces: elegis quienes entran y la app los ubica con la matriz oficial."}
           </p>
         </div>
 
@@ -427,9 +410,9 @@ export function FixtureBuilder({
               <p className={styles.emptyState}>Todavia no hay terceros clasificados.</p>
             ) : (
               <div className={styles.thirdList}>
-                {selectedThirds.map((team, index) => (
+                {selectedThirds.map((team) => (
                   <div key={team.id} className={styles.thirdRowSelected}>
-                    <div className={styles.thirdRank}>{index + 1}</div>
+                    <div className={styles.thirdRank}>{team.group}</div>
                     <div className={styles.thirdTeamInfo}>
                       <TeamBadge teamId={team.id} />
                       <div>
@@ -439,20 +422,6 @@ export function FixtureBuilder({
                     </div>
                     {!readOnly ? (
                       <div className={styles.thirdControls}>
-                        <button
-                          type="button"
-                          onClick={() => moveThirdPlaceTeam(index, -1)}
-                          disabled={index === 0}
-                        >
-                          ↑
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => moveThirdPlaceTeam(index, 1)}
-                          disabled={index === selectedThirds.length - 1}
-                        >
-                          ↓
-                        </button>
                         <button type="button" onClick={() => removeThirdPlaceTeam(team.id)}>
                           Quitar
                         </button>
@@ -500,12 +469,12 @@ export function FixtureBuilder({
         <div className={styles.sectionHeader}>
           <div>
             <p className={styles.sectionEyebrow}>Paso 3</p>
-            <h2>Terceros compatibles</h2>
+            <h2>Asignacion oficial de terceros</h2>
           </div>
           <p className={styles.sectionHint}>
             {readOnly
-              ? "Se muestra la asignacion final de terceros segun los cruces compatibles."
-              : "La app ordena y asigna automaticamente los terceros segun los cruces compatibles. Si queres, podes abrir el editor manual para corregirlos."}
+              ? "Se muestra donde cae cada tercero segun la combinacion oficial de grupos."
+              : "El usuario decide que terceros clasifican; la matriz oficial decide en que llave caen."}
           </p>
         </div>
 
@@ -513,11 +482,13 @@ export function FixtureBuilder({
           <div className={styles.assignmentSummaryRow}>
             <div className={styles.assignmentSummaryCopy}>
               <p className={styles.assignmentSummaryEyebrow}>Autoasignacion</p>
-              <h3>Terceros ordenados automaticamente segun cruces compatibles</h3>
+              <h3>Terceros ubicados por combinacion oficial FIFA</h3>
               <p>
                 {fixtureState.qualifiedThirdPlaces.length < 8
                   ? "Elegi ocho terceros clasificados para completar esta parte."
-                  : "La asignacion inicial queda resuelta para que puedas pasar directo al cuadro final."}
+                  : allThirdSlotsReady
+                    ? "La asignacion queda resuelta automaticamente y no depende del orden de seleccion."
+                    : "La combinacion seleccionada todavia no pudo resolverse con la matriz oficial."}
               </p>
             </div>
 
@@ -527,29 +498,14 @@ export function FixtureBuilder({
                 {fixtureState.qualifiedThirdPlaces.length < 8
                   ? "Esperando terceros clasificados"
                   : allThirdSlotsReady
-                    ? "Asignaciones automaticas listas"
-                    : "Asignaciones parciales"}
+                    ? "Asignacion oficial lista"
+                    : "Combinacion pendiente"}
               </span>
             </div>
           </div>
-
-          {!readOnly ? (
-            <div className={styles.assignmentSummaryActions}>
-              <button
-                type="button"
-                className={styles.secondaryAction}
-                onClick={() => setIsThirdAssignmentEditorOpen((current) => !current)}
-                disabled={!canEditThirdAssignments}
-              >
-                {isThirdAssignmentEditorVisible
-                  ? "Ocultar editor manual"
-                  : "Editar asignacion manual"}
-              </button>
-            </div>
-          ) : null}
         </div>
 
-        {!canEditThirdAssignments ? (
+        {!hasEightThirdsSelected ? (
           <p className={styles.emptyState}>
             Todavia faltan terceros clasificados para completar la autoasignacion.
           </p>
@@ -617,9 +573,9 @@ export function FixtureBuilder({
           </div>
         ) : null}
 
-        {readOnly && canEditThirdAssignments ? (
+        {allThirdSlotsReady ? (
           <div className={styles.assignmentGrid}>
-            {(Object.keys(thirdSlotOptions) as ThirdPlaceMatchId[]).map((matchId) => {
+            {THIRD_PLACE_MATCH_IDS.map((matchId) => {
               const assignedTeamId = fixtureState.thirdPlaceAssignments[matchId];
               const assignedTeam = assignedTeamId ? teamMap[assignedTeamId] : null;
               const match = matches[matchId];
